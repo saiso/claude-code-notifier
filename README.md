@@ -63,6 +63,21 @@ if this one does not fit your setup.
 
 ## Installation
 
+### From Homebrew tap
+
+```sh
+brew install saiso/tap/claude-code-notifier
+```
+
+This builds from source under Homebrew's prefix. The `.app` is placed at
+`$(brew --prefix)/opt/claude-code-notifier/libexec/Claude Code Notifier.app`
+and a `claude-code-notifier` wrapper is linked into `$(brew --prefix)/bin/`
+so you can also invoke it as `claude-code-notifier "message" "title" "sound"`.
+
+Dependencies (`librsvg` and Xcode Command Line Tools) are resolved by
+Homebrew where possible. On the first notification, macOS will ask for
+notification permission.
+
 ### From source
 
 ```sh
@@ -77,6 +92,11 @@ The installer verifies dependencies, builds the `.app`, and places it under
 
 The first time a notification fires, macOS will ask for notification permission.
 Approve it once and future notifications will show immediately.
+
+> Note: running both installation methods at once places two `.app` copies
+> with the same bundle identifier on your system, and macOS can become
+> inconsistent about which instance receives the click-through. Pick one
+> and remove the other.
 
 ## Quick Start
 
@@ -223,6 +243,11 @@ bundle identifiers:
 | iTerm2 | `com.googlecode.iterm2` |
 
 ## Integration with Claude Code
+
+If you installed via `brew install saiso/tap/claude-code-notifier`, replace
+`$HOME/.claude/apps/` in the snippet below with
+`$(brew --prefix)/opt/claude-code-notifier/libexec/`. The same snippet is also
+printed by Homebrew's caveats after `brew install`.
 
 Add the following to `~/.claude/settings.json` under `hooks`:
 
