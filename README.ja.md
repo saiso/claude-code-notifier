@@ -261,3 +261,9 @@ MIT。[LICENSE](LICENSE) を参照。
 ## 商標
 
 Claude と Claude Code は Anthropic, PBC の商標。本プロジェクトは Anthropic との関連はなく、公式の承認を受けているものでもない。同梱アセット（Heroicons、Apple の SF 等）の商標表示とライセンスは [TRADEMARKS.md](TRADEMARKS.md) を参照。
+
+## Author
+
+Made by saiso.
+
+ブログ・他のプロジェクトは https://saiso.jp を参照。

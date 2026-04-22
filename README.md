@@ -304,3 +304,9 @@ Claude and Claude Code are trademarks of Anthropic, PBC.
 This project is not affiliated with, endorsed by, or sponsored by Anthropic.
 See [TRADEMARKS.md](TRADEMARKS.md) for third-party trademark notices and
 attributions for bundled assets (Heroicons, Apple SF, etc.).
+
+## Author
+
+Made by saiso.
+
+Blog and other projects: https://saiso.jp
