@@ -25,6 +25,33 @@ This tool ships a small signed `.app` bundle whose sole job is to emit
 - configurable sounds per event label (`permission`, `idle`, `default`)
 - safe input handling (length caps, allowlisted sound names and bundle IDs)
 
+## Similar projects
+
+Several alternatives exist. Respect where it is due — these are worth checking
+if this one does not fit your setup.
+
+- [dazuiba/CCNotify](https://github.com/dazuiba/CCNotify) — Python-based, VS Code
+  jump on click.
+- [wyattjoh/claude-code-notification](https://github.com/wyattjoh/claude-code-notification)
+  — Rust-based, simple notifications.
+- [polyphilz/ccnotifs](https://github.com/polyphilz/ccnotifs) — Shell + custom
+  `.app`, tmux pane teleport on click.
+- [splazapp/claude-code-notification](https://github.com/splazapp/claude-code-notification)
+  — Bash + Swift, multi-IDE click-through.
+- [Naveenxyz/claude-code-notifier](https://github.com/Naveenxyz/claude-code-notifier)
+  — Shell, auto-detects 10+ IDEs and terminals.
+
+### What is different here
+
+- Single Swift binary, no Python / Node / Rust runtime dependency
+- License-clean icon derived from Heroicons (MIT), no SF Symbols constraint
+- Sound labels in `config.json` decouple hook wiring from sound choice
+- Input validation (allowlists, length caps, control-character stripping)
+- Universal binary (arm64 + x86_64), macOS 12.0 or later
+- Bilingual README (English + Japanese)
+- Complete OSS boilerplate: LICENSE, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT,
+  TRADEMARKS
+
 ## Requirements
 
 - macOS 12.0 Monterey or later (arm64 / x86_64 universal)
