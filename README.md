@@ -43,10 +43,12 @@ if this one does not fit your setup.
 
 ### What is different here
 
+- Attack surface explicitly closed off: allowlists for sound names and bundle
+  IDs, length caps for notification bodies, control-character stripping. Values
+  coming from `config.json` and CLI arguments are never trusted blindly
 - Single Swift binary, no Python / Node / Rust runtime dependency
 - License-clean icon derived from Heroicons (MIT), no SF Symbols constraint
 - Sound labels in `config.json` decouple hook wiring from sound choice
-- Input validation (allowlists, length caps, control-character stripping)
 - Universal binary (arm64 + x86_64), macOS 12.0 or later
 - Bilingual README (English + Japanese)
 - Complete OSS boilerplate: LICENSE, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT,
@@ -264,17 +266,8 @@ System Settings → Notifications, find "Claude Code Notifier", and enable
 notifications. If the entry is missing, reset the permission and try again:
 
 ```sh
-tccutil reset All io.github.saiso.claude-code-notifier
+tccutil reset Notifications io.github.saiso.claude-code-notifier
 open "$HOME/.claude/apps/Claude Code Notifier.app" --args "test" "" "default"
-```
-
-### Gatekeeper refuses to launch the app
-
-Because the distributed binary is ad-hoc signed (not notarized), Gatekeeper
-may quarantine it on first download. Remove the quarantine attribute:
-
-```sh
-xattr -dr com.apple.quarantine "$HOME/.claude/apps/Claude Code Notifier.app"
 ```
 
 ### Icon cache shows the old icon after rebuilds
@@ -305,7 +298,7 @@ directory at `~/.config/claude-code-notifier/`.
 To revoke the notification permission entirely:
 
 ```sh
-tccutil reset All io.github.saiso.claude-code-notifier
+tccutil reset Notifications io.github.saiso.claude-code-notifier
 ```
 
 ## Contributing

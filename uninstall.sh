@@ -47,7 +47,7 @@ echo ""
 read -r -p "通知権限の記録をリセットしますか？ (再インストール時に再び許可ダイアログが出ます) [y/N]: " answer
 case "$answer" in
   [yY]|[yY][eE][sS])
-    tccutil reset All "$BUNDLE_ID" 2>/dev/null || true
+    tccutil reset Notifications "$BUNDLE_ID" 2>/dev/null || true
     echo "[OK] 通知権限の記録をリセット"
     ;;
   *)
