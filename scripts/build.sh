@@ -15,7 +15,7 @@ ICON_GEN="$SCRIPT_DIR/generate-notifier-icon.swift"
 
 APP_NAME="Claude Code Notifier"
 BUNDLE_ID="io.github.saiso.claude-code-notifier"
-BUNDLE_VERSION="1.0.0"
+BUNDLE_VERSION="1.0.1"
 APP_DIR="${CCN_APP_DIR:-$HOME/.claude/apps}"
 APP_PATH="$APP_DIR/$APP_NAME.app"
 

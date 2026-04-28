@@ -263,10 +263,9 @@ Add the following to `~/.claude/settings.json` under `hooks`:
             "command": "open \"$HOME/.claude/apps/Claude Code Notifier.app\" --args \"返信待ちです\" \"\" \"idle\""
           }
         ]
-      }
-    ],
-    "PermissionRequest": [
+      },
       {
+        "matcher": "permission_prompt",
         "hooks": [
           {
             "type": "command",

@@ -213,10 +213,9 @@ Claude Code の `settings.json` からも、任意のイベントに紐づくコ
             "command": "open \"$HOME/.claude/apps/Claude Code Notifier.app\" --args \"返信待ちです\" \"\" \"idle\""
           }
         ]
-      }
-    ],
-    "PermissionRequest": [
+      },
       {
+        "matcher": "permission_prompt",
         "hooks": [
           {
             "type": "command",

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-04-28
+
+### Fixed
+
+- README hook configuration example: replaced the separate
+  `PermissionRequest` event entry with a `permission_prompt` matcher under
+  the existing `Notification` event. Both events fire at the same moment
+  when a permission dialog appears, and configuring both caused the
+  notification sound to play twice.
+
 ## [1.0.0] - 2026-04-22
 
 ### Added
