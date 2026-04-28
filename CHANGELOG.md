@@ -19,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   fix ships to avoid double-firing. Terminal launches are unaffected and
   continue to use the regular `Notification` event hooks.
 
+### Fixed
+
+- `install.sh` post-install caveats and `uninstall.sh` reminder text were
+  still referencing the obsolete `PermissionRequest` event. They now match
+  the v1.0.1 README correction (`Notification` event with
+  `permission_prompt` matcher).
+
 ## [1.0.1] - 2026-04-28
 
 ### Fixed
