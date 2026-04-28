@@ -230,6 +230,61 @@ Claude Code の `settings.json` からも、任意のイベントに紐づくコ
 
 `title` を空にすると `config.json` の `defaultTitle` が使われる。第 3 引数は `config.json` から対応するサウンドを引くラベル。
 
+## 既知の問題
+
+### VS Code 拡張版で `Notification` event hook が発火しない
+
+Claude Code の VS Code 拡張版は、現在 permission ダイアログ表示時に `Notification` event hook を発火しない（Anthropic [claude-code#8985](https://github.com/anthropics/claude-code/issues/8985)、2026-04-28 時点で OPEN）。Terminal 起動時は `Notification` hook が正しく発火する。VS Code 拡張版固有の regression。
+
+Anthropic 側で修正されるまでの workaround として、`PreToolUse` event 経由で通知を出すことができる。トレードオフは「Bash 実行のたびに通知が出る」点。auto-allow された read-only コマンドでも音が鳴るため、専用の `Notification` event より騒がしくなる。
+
+#### Workaround
+
+以下のスクリプトを任意の場所に保存する（例は `~/.config/claude-code-notifier/hooks/`）。
+
+```bash
+#!/bin/bash
+# anthropics/claude-code#8985 の workaround:
+# VS Code 拡張版は Notification event hook を発火しないため、PreToolUse の
+# Bash matcher で通知を出す。
+INPUT=$(cat)
+TOOL=$(echo "$INPUT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('tool_name',''))" 2>/dev/null)
+[ "$TOOL" = "Bash" ] || exit 0
+open "$HOME/.claude/apps/Claude Code Notifier.app" \
+  --args "コマンド確認が必要です" "" "permission" >/dev/null 2>&1 &
+exit 0
+```
+
+```sh
+mkdir -p ~/.config/claude-code-notifier/hooks
+# 上記スクリプトを ~/.config/claude-code-notifier/hooks/notify-on-bash-pre.sh に保存
+chmod +x ~/.config/claude-code-notifier/hooks/notify-on-bash-pre.sh
+```
+
+Homebrew でインストールした場合は、スクリプト内の `$HOME/.claude/apps/` を `$(brew --prefix)/opt/claude-code-notifier/libexec/` に置き換える。
+
+通常の `Notification` hook と並べて、`.claude/settings.json` に `PreToolUse` エントリを追加する。
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.config/claude-code-notifier/hooks/notify-on-bash-pre.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Anthropic が [#8985](https://github.com/anthropics/claude-code/issues/8985) を修正したら、この `PreToolUse` エントリを削除する。修正後も残したままにすると、permission ダイアログ 1 回につき通知が 2 回鳴る（`Notification` 経由と `PreToolUse` 経由の両方）。
+
 ## トラブルシューティング
 
 ### 最初の通知が出てこない

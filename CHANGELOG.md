@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-04-28
+
+### Added
+
+- README documentation of the Anthropic Claude Code VS Code extension
+  regression (anthropics/claude-code#8985), where `Notification` event hooks
+  no longer fire when a permission dialog appears. Includes a workaround
+  recipe that routes notifications through the `PreToolUse` Bash matcher
+  instead, with a clear callout to remove the workaround once the upstream
+  fix ships to avoid double-firing. Terminal launches are unaffected and
+  continue to use the regular `Notification` event hooks.
+
 ## [1.0.1] - 2026-04-28
 
 ### Fixed
