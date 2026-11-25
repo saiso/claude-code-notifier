@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-11-25
+
+### Changed
+
+- README "Known issues": the VS Code extension `Notification` hook issue
+  (anthropics/claude-code#8985) was fixed in Claude Code 2.1.233. The
+  `PreToolUse` workaround is now only needed on Claude Code 2.1.232 and
+  earlier, and is folded into a collapsible block. Users who added the
+  workaround should remove it after updating to avoid double-firing.
+
 ## [1.0.2] - 2026-04-28
 
 ### Added

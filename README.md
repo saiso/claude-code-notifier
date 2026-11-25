@@ -283,28 +283,34 @@ label that resolves to a sound per `config.json`.
 
 ## Known issues
 
-### VS Code extension: `Notification` event hook does not fire
+### VS Code extension: `Notification` hook did not fire before Claude Code 2.1.233
 
-The Claude Code VS Code extension currently does not fire `Notification`
-event hooks when a permission dialog appears (Anthropic
-[claude-code#8985](https://github.com/anthropics/claude-code/issues/8985),
-open as of 2026-04-28). Terminal launches still fire `Notification` hooks
-correctly; this regression only affects the VS Code extension.
+In Claude Code 2.1.232 and earlier, the VS Code extension did not fire
+`Notification` hooks for permission prompts (Anthropic
+[claude-code#8985](https://github.com/anthropics/claude-code/issues/8985)).
+Claude Code 2.1.233 fixed this, so on 2.1.233 or later the regular
+`Notification` hooks above are all you need. Whether `idle_prompt` fires in
+the VS Code extension has not been verified here.
 
-Until the upstream fix ships, you can route notifications through the
-`PreToolUse` event instead. The trade-off: the notifier fires on every
-`Bash` invocation — including auto-allowed read-only commands — so it is
-noisier than the dedicated `Notification` event would be.
+If you added the `PreToolUse` workaround below on an earlier version, remove
+it after updating to 2.1.233 or later. Otherwise the notifier fires twice per
+permission prompt (once via `Notification`, once via `PreToolUse`).
 
-#### Workaround
+<details>
+<summary>Workaround for Claude Code 2.1.232 and earlier</summary>
+
+This routes notifications through the `PreToolUse` event. The trade-off: the
+notifier fires on every `Bash` invocation, including auto-allowed read-only
+commands.
 
 Save the following script (any path works; the example uses
 `~/.config/claude-code-notifier/hooks/`):
 
 ```bash
 #!/bin/bash
-# Workaround for anthropics/claude-code#8985: VS Code extension does not
-# fire Notification event hooks. Route through PreToolUse Bash matcher.
+# Workaround for anthropics/claude-code#8985 (Claude Code 2.1.232 and earlier):
+# the VS Code extension does not fire Notification hooks for permission
+# prompts. Route through PreToolUse Bash matcher.
 INPUT=$(cat)
 TOOL=$(echo "$INPUT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('tool_name',''))" 2>/dev/null)
 [ "$TOOL" = "Bash" ] || exit 0
@@ -343,11 +349,7 @@ regular `Notification` hooks:
 }
 ```
 
-When Anthropic ships a fix for
-[#8985](https://github.com/anthropics/claude-code/issues/8985), remove
-this `PreToolUse` entry. Leaving it in place after the upstream fix lands
-will cause the notifier to fire twice per permission dialog (once via
-`Notification`, once via `PreToolUse`).
+</details>
 
 ## Troubleshooting
 
