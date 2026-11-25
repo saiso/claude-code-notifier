@@ -232,21 +232,24 @@ Claude Code の `settings.json` からも、任意のイベントに紐づくコ
 
 ## 既知の問題
 
-### VS Code 拡張版で `Notification` event hook が発火しない
+### VS Code 拡張版で `Notification` hook が発火しなかった問題（Claude Code 2.1.232 以前）
 
-Claude Code の VS Code 拡張版は、現在 permission ダイアログ表示時に `Notification` event hook を発火しない（Anthropic [claude-code#8985](https://github.com/anthropics/claude-code/issues/8985)、2026-04-28 時点で OPEN）。Terminal 起動時は `Notification` hook が正しく発火する。VS Code 拡張版固有の regression。
+Claude Code 2.1.232 以前の VS Code 拡張版は、permission ダイアログ表示時に `Notification` hook を発火しなかった（Anthropic [claude-code#8985](https://github.com/anthropics/claude-code/issues/8985)）。Claude Code 2.1.233 で修正されたので、2.1.233 以降は上記の `Notification` hook だけで通知が出る。VS Code 拡張版で `idle_prompt` が発火するかは未確認。
 
-Anthropic 側で修正されるまでの workaround として、`PreToolUse` event 経由で通知を出すことができる。トレードオフは「Bash 実行のたびに通知が出る」点。auto-allow された read-only コマンドでも音が鳴るため、専用の `Notification` event より騒がしくなる。
+以前の版で下記の `PreToolUse` workaround を入れた場合は、2.1.233 以降に更新したら削除する。残したままにすると、permission ダイアログ 1 回につき通知が 2 回鳴る（`Notification` 経由と `PreToolUse` 経由の両方）。
 
-#### Workaround
+<details>
+<summary>Claude Code 2.1.232 以前向けの workaround</summary>
+
+`PreToolUse` event 経由で通知を出す。トレードオフは、auto-allow された read-only コマンドも含めて Bash 実行のたびに通知が出る点。
 
 以下のスクリプトを任意の場所に保存する（例は `~/.config/claude-code-notifier/hooks/`）。
 
 ```bash
 #!/bin/bash
-# anthropics/claude-code#8985 の workaround:
-# VS Code 拡張版は Notification event hook を発火しないため、PreToolUse の
-# Bash matcher で通知を出す。
+# anthropics/claude-code#8985 の workaround（Claude Code 2.1.232 以前）:
+# VS Code 拡張版は permission ダイアログで Notification hook を発火しないため、
+# PreToolUse の Bash matcher で通知を出す。
 INPUT=$(cat)
 TOOL=$(echo "$INPUT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('tool_name',''))" 2>/dev/null)
 [ "$TOOL" = "Bash" ] || exit 0
@@ -283,7 +286,7 @@ Homebrew でインストールした場合は、スクリプト内の `$HOME/.cl
 }
 ```
 
-Anthropic が [#8985](https://github.com/anthropics/claude-code/issues/8985) を修正したら、この `PreToolUse` エントリを削除する。修正後も残したままにすると、permission ダイアログ 1 回につき通知が 2 回鳴る（`Notification` 経由と `PreToolUse` 経由の両方）。
+</details>
 
 ## トラブルシューティング
 
